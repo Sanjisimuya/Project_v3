@@ -19,6 +19,13 @@ export interface User {
   email: string;
 }
 
+export interface AuthResponse {
+  id: number;
+  name: string;
+  email: string;
+  token: string;
+}
+
 export interface RegisterInput {
   /** @minLength 1 */
   name: string;

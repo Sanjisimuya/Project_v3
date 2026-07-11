@@ -17,7 +17,7 @@ router.get("/transactions", async (req, res): Promise<void> => {
   const rows = await db
     .select()
     .from(transactionsTable)
-    .where(eq(transactionsTable.userId, req.session.userId!))
+    .where(eq(transactionsTable.userId, req.userId!))
     .orderBy(desc(transactionsTable.occurredAt));
 
   res.json(ListTransactionsResponse.parse(rows));
@@ -33,7 +33,7 @@ router.post("/transactions", async (req, res): Promise<void> => {
   const [transaction] = await db
     .insert(transactionsTable)
     .values({
-      userId: req.session.userId!,
+      userId: req.userId!,
       title: parsed.data.title.trim(),
       category: parsed.data.category,
       amount: parsed.data.amount,
@@ -62,7 +62,7 @@ router.delete("/transactions/:id", async (req, res): Promise<void> => {
     .where(
       and(
         eq(transactionsTable.id, params.data.id),
-        eq(transactionsTable.userId, req.session.userId!),
+        eq(transactionsTable.userId, req.userId!),
       ),
     )
     .returning();

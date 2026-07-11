@@ -20,6 +20,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AuthResponse,
   ErrorResponse,
   HealthStatus,
   LoginInput,
@@ -145,9 +146,9 @@ export const getRegisterUrl = () => {
 /**
  * @summary Create a new account
  */
-export const register = async (registerInput: RegisterInput, options?: RequestInit): Promise<User> => {
+export const register = async (registerInput: RegisterInput, options?: RequestInit): Promise<AuthResponse> => {
 
-  return customFetch<User>(getRegisterUrl(),
+  return customFetch<AuthResponse>(getRegisterUrl(),
   {
     ...options,
     method: 'POST',
@@ -216,9 +217,9 @@ export const getLoginUrl = () => {
 /**
  * @summary Log in with email and password
  */
-export const login = async (loginInput: LoginInput, options?: RequestInit): Promise<User> => {
+export const login = async (loginInput: LoginInput, options?: RequestInit): Promise<AuthResponse> => {
 
-  return customFetch<User>(getLoginUrl(),
+  return customFetch<AuthResponse>(getLoginUrl(),
   {
     ...options,
     method: 'POST',

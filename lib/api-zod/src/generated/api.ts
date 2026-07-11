@@ -34,7 +34,8 @@ export const RegisterBody = zod.object({
 export const RegisterResponse = zod.object({
   "id": zod.number(),
   "name": zod.string(),
-  "email": zod.string()
+  "email": zod.string(),
+  "token": zod.string()
 })
 
 
@@ -52,7 +53,8 @@ export const LoginBody = zod.object({
 export const LoginResponse = zod.object({
   "id": zod.number(),
   "name": zod.string(),
-  "email": zod.string()
+  "email": zod.string(),
+  "token": zod.string()
 })
 
 
