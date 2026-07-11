@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Home, List, PieChart, Settings, Search, X, ChevronDown, ChevronRight, Bell, Shield, Smartphone, Moon, Download, Trash2, User, CheckCircle } from "lucide-react";
+import { Home, List, PieChart, Search, X, ChevronDown, ChevronRight, Bell, Smartphone, User, CheckCircle } from "lucide-react";
+import { LoginPage } from "./LoginPage";
 import {
   PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
@@ -327,9 +328,9 @@ function MeSectionHeader({ title }: { title: string }) {
   );
 }
 
-function SettingsView({ reminders: _reminders, onToggleReminder: _onToggleReminder }: { reminders: Reminder[]; onToggleReminder: (id: string) => void }) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+function SettingsView({ reminders: _reminders, onToggleReminder: _onToggleReminder, userName = "", userEmail = "", onLogout }: { reminders: Reminder[]; onToggleReminder: (id: string) => void; userName?: string; userEmail?: string; onLogout?: () => void }) {
+  const [name, setName] = useState(userName);
+  const [email, setEmail] = useState(userEmail);
   const [editMode, setEditMode] = useState(false);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
@@ -418,7 +419,7 @@ function SettingsView({ reminders: _reminders, onToggleReminder: _onToggleRemind
 
       {/* Contact */}
       <MeSectionHeader title="Hubungi Pembuat" />
-      <div className="mx-5 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-4">
+      <div className="mx-5 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-3.5">
           <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-green-50 shrink-0">
             <Smartphone size={18} className="text-green-500" />
@@ -429,6 +430,22 @@ function SettingsView({ reminders: _reminders, onToggleReminder: _onToggleRemind
           </div>
         </div>
       </div>
+
+      {/* Logout */}
+      {onLogout && (
+        <>
+          <MeSectionHeader title="Akun" />
+          <div className="mx-5 mb-6">
+            <button
+              onClick={onLogout}
+              className="w-full py-3.5 rounded-2xl border-2 border-red-200 text-red-500 font-semibold transition-colors hover:bg-red-50 active:bg-red-100"
+              style={{ fontSize: "0.9rem" }}
+            >
+              Keluar dari Akun
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -598,10 +615,19 @@ function BottomNav({ activeTab, onTabChange, onAddExpense }: { activeTab: Tab; o
 // ─── Root App ─────────────────────────────────────────────────────────────────
 
 export function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInName, setLoggedInName] = useState("");
+  const [loggedInEmail, setLoggedInEmail] = useState("");
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [showAddModal, setShowAddModal] = useState(false);
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [reminders, setReminders] = useState<Reminder[]>(initialReminders);
+
+  const handleLogin = (name: string, email: string) => {
+    setLoggedInName(name);
+    setLoggedInEmail(email);
+    setIsLoggedIn(true);
+  };
 
   const handleAddExpense = (title: string, category: Category, amount: number, note: string) => {
     const newTx: Transaction = {
@@ -631,34 +657,47 @@ export function App() {
           boxShadow: "0 40px 80px rgba(0,0,0,0.3)",
         }}
       >
-        <div className="h-full flex flex-col">
-          <div className="flex-1 overflow-hidden relative">
-            <div className={`absolute inset-0 ${activeTab === "dashboard" ? "block" : "hidden"}`}>
-              <Dashboard transactions={transactions} onAddExpense={() => setShowAddModal(true)} />
+        {/* ── Login gate ── */}
+        {!isLoggedIn ? (
+          <LoginPage onLogin={handleLogin} />
+        ) : (
+          <>
+            <div className="h-full flex flex-col">
+              <div className="flex-1 overflow-hidden relative">
+                <div className={`absolute inset-0 ${activeTab === "dashboard" ? "block" : "hidden"}`}>
+                  <Dashboard transactions={transactions} onAddExpense={() => setShowAddModal(true)} />
+                </div>
+                <div className={`absolute inset-0 ${activeTab === "history" ? "block" : "hidden"}`}>
+                  <History transactions={transactions} />
+                </div>
+                <div className={`absolute inset-0 ${activeTab === "reports" ? "block" : "hidden"}`}>
+                  <Reports transactions={transactions} />
+                </div>
+                <div className={`absolute inset-0 ${activeTab === "settings" ? "block" : "hidden"}`}>
+                  <SettingsView
+                    reminders={reminders}
+                    onToggleReminder={handleToggleReminder}
+                    userName={loggedInName}
+                    userEmail={loggedInEmail}
+                    onLogout={() => setIsLoggedIn(false)}
+                  />
+                </div>
+              </div>
             </div>
-            <div className={`absolute inset-0 ${activeTab === "history" ? "block" : "hidden"}`}>
-              <History transactions={transactions} />
-            </div>
-            <div className={`absolute inset-0 ${activeTab === "reports" ? "block" : "hidden"}`}>
-              <Reports transactions={transactions} />
-            </div>
-            <div className={`absolute inset-0 ${activeTab === "settings" ? "block" : "hidden"}`}>
-              <SettingsView reminders={reminders} onToggleReminder={handleToggleReminder} />
-            </div>
-          </div>
-        </div>
 
-        <BottomNav
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          onAddExpense={() => setShowAddModal(true)}
-        />
+            <BottomNav
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+              onAddExpense={() => setShowAddModal(true)}
+            />
 
-        {showAddModal && (
-          <AddExpenseModal
-            onClose={() => setShowAddModal(false)}
-            onAdd={handleAddExpense}
-          />
+            {showAddModal && (
+              <AddExpenseModal
+                onClose={() => setShowAddModal(false)}
+                onAdd={handleAddExpense}
+              />
+            )}
+          </>
         )}
       </div>
     </div>
