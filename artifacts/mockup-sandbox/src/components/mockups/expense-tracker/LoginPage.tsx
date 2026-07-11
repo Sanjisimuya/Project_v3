@@ -104,14 +104,6 @@ export function LoginPage({ onLogin }: LoginPageProps) {
               className="w-full bg-gray-50 rounded-xl px-4 py-3 outline-none text-gray-800 border border-transparent focus:border-green-300 transition-colors pr-11"
               style={{ fontSize: "0.875rem" }}
             />
-            <button
-              type="button"
-              onClick={() => setShowPass((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-              style={{ fontSize: "1.1rem" }}
-            >
-              {showPass ? "🙈" : "👁️"}
-            </button>
           </div>
 
           <button
