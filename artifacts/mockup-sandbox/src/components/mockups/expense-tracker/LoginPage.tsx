@@ -50,9 +50,8 @@ export function LoginPage({ onLogin }: LoginPageProps) {
         <h1 className="text-gray-900" style={{ fontSize: "1.5rem", fontWeight: 800, letterSpacing: "-0.02em" }}>
           DompetKu
         </h1>
-        <p className="text-gray-400 mt-0.5" style={{ fontSize: "0.78rem" }}>Catat pengeluaran harian kamu 💸</p>
+        <p className="text-gray-400 mt-0.5" style={{ fontSize: "0.78rem" }}>Catat daily expense mu</p>
       </div>
-
       {/* Card */}
       <div className="w-full mx-5 bg-white rounded-3xl shadow-lg overflow-hidden" style={{ maxWidth: 360, margin: "0 20px" }}>
         {/* Tabs */}
