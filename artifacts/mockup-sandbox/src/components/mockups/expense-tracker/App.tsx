@@ -154,22 +154,6 @@ function History({ transactions }: { transactions: Transaction[] }) {
         </div>
       </div>
 
-      <div className="flex gap-2 overflow-x-auto px-5 py-3 bg-white border-b border-gray-100">
-        {ALL_CATS.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCat(cat)}
-            className={`shrink-0 px-3 py-1.5 rounded-full border transition-all ${
-              selectedCat === cat
-                ? "bg-green-500 border-green-500 text-white"
-                : "bg-white border-gray-200 text-gray-600"
-            }`}
-            style={{ fontSize: "0.75rem", whiteSpace: "nowrap" }}
-          >
-            {cat !== "Semua" && CATEGORY_ICONS[cat as Category]} {cat}
-          </button>
-        ))}
-      </div>
 
       <div className="px-5 py-2">
         <p className="text-gray-400" style={{ fontSize: "0.75rem" }}>{filtered.length} transaksi ditemukan</p>
