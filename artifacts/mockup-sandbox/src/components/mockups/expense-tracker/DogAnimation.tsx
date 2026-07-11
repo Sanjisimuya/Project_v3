@@ -1,14 +1,21 @@
+import { useEffect, useRef } from "react";
+
 export function DogAnimation() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true;
+    v.play().catch(() => {});
+  }, []);
+
   return (
     <div
       className="w-full flex items-center justify-center relative overflow-hidden"
       style={{ height: "220px", background: "linear-gradient(180deg, #fce7f3 0%, #fdf2f8 60%, #f0fdf4 100%)" }}
     >
       <style>{`
-        @keyframes mascotBounce {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
         @keyframes floatText {
           0%, 100% { transform: translateY(0px); opacity: 1; }
           50% { transform: translateY(-4px); opacity: 0.85; }
@@ -17,16 +24,10 @@ export function DogAnimation() {
           0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
           50% { transform: scale(1.3) rotate(20deg); opacity: 1; }
         }
-        @keyframes shadowPulse {
-          0%, 100% { transform: scaleX(1); opacity: 0.18; }
-          50% { transform: scaleX(0.72); opacity: 0.09; }
-        }
-        .mascot-body { animation: mascotBounce 1s ease-in-out infinite; }
-        .float-text  { animation: floatText 1.5s ease-in-out infinite; }
-        .star        { animation: starPop 1.2s ease-in-out infinite; }
-        .star2       { animation: starPop 1.2s ease-in-out infinite 0.4s; }
-        .star3       { animation: starPop 1.2s ease-in-out infinite 0.8s; }
-        .mascot-shadow { animation: shadowPulse 1s ease-in-out infinite; }
+        .float-text { animation: floatText 1.5s ease-in-out infinite; }
+        .star  { animation: starPop 1.2s ease-in-out infinite; }
+        .star2 { animation: starPop 1.2s ease-in-out infinite 0.4s; }
+        .star3 { animation: starPop 1.2s ease-in-out infinite 0.8s; }
       `}</style>
 
       {/* decorative stars */}
@@ -52,30 +53,28 @@ export function DogAnimation() {
         <span style={{ fontSize: "0.8rem", display: "block" }}>✨</span>
       </div>
 
-      {/* mascot */}
-      <div className="mascot-body flex flex-col items-center" style={{ marginTop: 8 }}>
-        <img
-          src="/__mockup/mascot.jpg"
-          alt="mascot"
-          style={{
-            width: 148,
-            height: 148,
-            objectFit: "contain",
-            imageRendering: "pixelated",
-            filter: "drop-shadow(0 4px 8px rgba(249,168,212,0.45))",
-          }}
-        />
-        {/* ground shadow */}
-        <div
-          className="mascot-shadow"
-          style={{
-            width: 80,
-            height: 10,
-            borderRadius: "50%",
-            background: "rgba(236,72,153,0.18)",
-            marginTop: -4,
-          }}
-        />
+      {/* mascot video — rounded card so white bg blends in */}
+      <div
+        style={{
+          width: 164,
+          height: 164,
+          borderRadius: 24,
+          overflow: "hidden",
+          background: "#fff",
+          boxShadow: "0 4px 16px rgba(249,168,212,0.35)",
+        }}
+      >
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        >
+          <source src="/__mockup/mascot.webm" type="video/webm" />
+          <source src="/__mockup/mascot_web.mp4" type="video/mp4" />
+        </video>
       </div>
 
       {/* speech bubble */}
