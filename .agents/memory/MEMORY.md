@@ -1,0 +1,2 @@
+- [Orval email format zod v4 break](orval-openapi-quirks.md) — don't use `format: email` in OpenAPI specs; Orval emits `zod.email()` incompatible with pinned zod v3.
+- [connect-pg-simple table.sql lost on bundling](connect-pg-simple-bundling.md) — esbuild-bundled Node servers must create the session table manually, not via `createTableIfMissing`.
