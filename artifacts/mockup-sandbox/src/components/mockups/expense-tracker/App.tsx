@@ -317,9 +317,9 @@ function Reports({ transactions }: { transactions: Transaction[] }) {
   );
 }
 
-// ─── Settings ─────────────────────────────────────────────────────────────────
+// ─── Me ───────────────────────────────────────────────────────────────────────
 
-function SectionHeader({ title }: { title: string }) {
+function MeSectionHeader({ title }: { title: string }) {
   return (
     <p className="text-gray-400 px-5 mb-2 mt-5" style={{ fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
       {title}
@@ -327,122 +327,107 @@ function SectionHeader({ title }: { title: string }) {
   );
 }
 
-function SettingRow({ icon, label, value, danger }: { icon: React.ReactNode; label: string; value?: string; danger?: boolean }) {
-  return (
-    <button className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 active:bg-gray-100 transition-colors">
-      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${danger ? "bg-red-50" : "bg-gray-100"}`}>
-        <span className={danger ? "text-red-500" : "text-gray-600"}>{icon}</span>
-      </div>
-      <div className="flex-1 text-left">
-        <p className={`${danger ? "text-red-500" : "text-gray-800"}`} style={{ fontSize: "0.875rem" }}>{label}</p>
-        {value && <p className="text-gray-400" style={{ fontSize: "0.75rem" }}>{value}</p>}
-      </div>
-      <ChevronRight size={16} className="text-gray-300" />
-    </button>
-  );
-}
+function SettingsView({ reminders: _reminders, onToggleReminder: _onToggleReminder }: { reminders: Reminder[]; onToggleReminder: (id: string) => void }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [editMode, setEditMode] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [rated, setRated] = useState(false);
 
-function SettingsView({ reminders, onToggleReminder }: { reminders: Reminder[]; onToggleReminder: (id: string) => void }) {
-  const [darkMode, setDarkMode] = useState(false);
-  const [notifications, setNotifications] = useState(true);
+  const initial = name.trim() ? name.trim()[0].toUpperCase() : "?";
 
   return (
     <div className="flex flex-col h-full bg-gray-50 overflow-y-auto pb-24">
-      <div className="px-5 pt-10 pb-5 bg-white border-b border-gray-100">
-        <h1 className="text-gray-900" style={{ fontWeight: 700 }}>Pengaturan</h1>
+      {/* Header */}
+      <div className="px-5 pt-10 pb-5 bg-white border-b border-gray-100 flex items-center justify-between">
+        <h1 className="text-gray-900" style={{ fontWeight: 700 }}>Me</h1>
+        <button
+          onClick={() => setEditMode((v) => !v)}
+          className="px-3 py-1 rounded-full border border-green-400 text-green-600 transition-colors hover:bg-green-50"
+          style={{ fontSize: "0.75rem", fontWeight: 600 }}
+        >
+          {editMode ? "Simpan" : "Edit"}
+        </button>
       </div>
 
-      <div className="mx-5 mt-4 bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-        <div className="flex items-center gap-3 p-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
-            <span className="text-white" style={{ fontSize: "1.5rem", fontWeight: 700 }}>A</span>
+      {/* Profile card */}
+      <div className="mx-5 mt-5 bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center shrink-0">
+            <span className="text-white" style={{ fontSize: "1.75rem", fontWeight: 700 }}>{initial}</span>
           </div>
-          <div className="flex-1">
-            <p className="text-gray-900" style={{ fontWeight: 600 }}>Ahmad Rizki</p>
-            <p className="text-gray-400" style={{ fontSize: "0.8rem" }}>ahmad.rizki@email.com</p>
-            <div className="flex items-center gap-1 mt-0.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-              <p className="text-green-600" style={{ fontSize: "0.7rem" }}>Aktif sejak 15 Jan 2024</p>
-            </div>
+          <div className="flex-1 min-w-0">
+            {editMode ? (
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Nama kamu"
+                className="w-full bg-gray-100 rounded-xl px-3 py-1.5 outline-none text-gray-800 mb-1.5"
+                style={{ fontSize: "0.875rem", fontWeight: 600 }}
+              />
+            ) : (
+              <p className="text-gray-900 truncate" style={{ fontWeight: 700 }}>
+                {name || <span className="text-gray-300">Belum diisi</span>}
+              </p>
+            )}
+            {editMode ? (
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email kamu"
+                className="w-full bg-gray-100 rounded-xl px-3 py-1.5 outline-none text-gray-500"
+                style={{ fontSize: "0.8rem" }}
+              />
+            ) : (
+              <p className="text-gray-400 truncate" style={{ fontSize: "0.8rem" }}>
+                {email || <span className="text-gray-300">Belum diisi</span>}
+              </p>
+            )}
           </div>
-          <ChevronRight size={16} className="text-gray-300" />
         </div>
       </div>
 
-      <SectionHeader title="Pengingat Tagihan" />
-      <div className="mx-5 bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-        {reminders.map((r, i) => (
-          <div key={r.id}>
-            {i > 0 && <div className="mx-4 h-px bg-gray-50" />}
+      {/* Rating */}
+      <MeSectionHeader title="Rating Aplikasi" />
+      <div className="mx-5 bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+        <p className="text-gray-700 mb-1" style={{ fontWeight: 600 }}>Beri Rating Aplikasi</p>
+        <p className="text-gray-400 mb-4" style={{ fontSize: "0.78rem" }}>Bagaimana pengalaman kamu?</p>
+        <div className="flex gap-2 justify-center mb-4">
+          {[1, 2, 3, 4, 5].map((star) => (
             <button
-              onClick={() => onToggleReminder(r.id)}
-              className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 transition-colors"
+              key={star}
+              onMouseEnter={() => !rated && setHoverRating(star)}
+              onMouseLeave={() => !rated && setHoverRating(0)}
+              onClick={() => { setRating(star); setRated(true); }}
+              style={{ fontSize: "2rem", transition: "transform 0.15s", transform: (hoverRating || rating) >= star ? "scale(1.2)" : "scale(1)" }}
             >
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${r.isPaid ? "bg-green-50" : "bg-orange-50"}`}>
-                {r.isPaid ? <CheckCircle size={18} className="text-green-500" /> : <Bell size={18} className="text-orange-500" />}
-              </div>
-              <div className="flex-1 text-left">
-                <p className="text-gray-800" style={{ fontSize: "0.875rem" }}>{r.title}</p>
-                <p className="text-gray-400" style={{ fontSize: "0.72rem" }}>
-                  Jatuh tempo: {new Date(r.dueDate).toLocaleDateString("id-ID", { day: "numeric", month: "long" })} · {formatRupiah(r.amount)}
-                </p>
-              </div>
-              <span
-                className="px-2 py-0.5 rounded-full text-white shrink-0"
-                style={{ fontSize: "0.65rem", fontWeight: 600, backgroundColor: r.isPaid ? "#22c55e" : "#f97316" }}
-              >
-                {r.isPaid ? "Lunas" : "Belum Bayar"}
-              </span>
+              <span style={{ color: (hoverRating || rating) >= star ? "#f59e0b" : "#e5e7eb" }}>★</span>
             </button>
-          </div>
-        ))}
+          ))}
+        </div>
+        {rated && (
+          <p className="text-center text-green-600" style={{ fontSize: "0.8rem", fontWeight: 600 }}>
+            Terima kasih atas rating {rating} bintang! 🎉
+          </p>
+        )}
+        {!rated && (
+          <p className="text-center text-gray-300" style={{ fontSize: "0.78rem" }}>Ketuk bintang untuk memberi rating</p>
+        )}
       </div>
 
-      <SectionHeader title="Preferensi Aplikasi" />
-      <div className="mx-5 bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-gray-100 shrink-0">
-            <Moon size={18} className="text-gray-600" />
-          </div>
-          <p className="flex-1 text-gray-800" style={{ fontSize: "0.875rem" }}>Mode Gelap</p>
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className={`w-11 h-6 rounded-full transition-colors relative ${darkMode ? "bg-green-500" : "bg-gray-200"}`}
-          >
-            <div className={`w-5 h-5 rounded-full bg-white shadow absolute top-0.5 transition-transform ${darkMode ? "translate-x-5" : "translate-x-0.5"}`} />
-          </button>
-        </div>
+      {/* Contact */}
+      <MeSectionHeader title="Hubungi Pembuat" />
+      <div className="mx-5 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-4">
         <div className="flex items-center gap-3 px-4 py-3.5">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-gray-100 shrink-0">
-            <Bell size={18} className="text-gray-600" />
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-green-50 shrink-0">
+            <Smartphone size={18} className="text-green-500" />
           </div>
           <div className="flex-1">
-            <p className="text-gray-800" style={{ fontSize: "0.875rem" }}>Notifikasi</p>
-            <p className="text-gray-400" style={{ fontSize: "0.72rem" }}>Pengingat & pembaruan</p>
+            <p className="text-gray-800" style={{ fontSize: "0.875rem", fontWeight: 500 }}>WhatsApp / Telepon</p>
+            <p className="text-green-600" style={{ fontSize: "0.8rem", fontWeight: 600 }}>085185033441</p>
           </div>
-          <button
-            onClick={() => setNotifications(!notifications)}
-            className={`w-11 h-6 rounded-full transition-colors relative ${notifications ? "bg-green-500" : "bg-gray-200"}`}
-          >
-            <div className={`w-5 h-5 rounded-full bg-white shadow absolute top-0.5 transition-transform ${notifications ? "translate-x-5" : "translate-x-0.5"}`} />
-          </button>
         </div>
-      </div>
-
-      <SectionHeader title="Akun" />
-      <div className="mx-5 bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-        <SettingRow icon={<User size={18} />} label="Edit Profil" value="Ubah nama & foto" />
-        <div className="mx-4 h-px bg-gray-50" />
-        <SettingRow icon={<Shield size={18} />} label="Keamanan" value="Kata sandi & PIN" />
-        <div className="mx-4 h-px bg-gray-50" />
-        <SettingRow icon={<Smartphone size={18} />} label="Sinkronisasi Data" value="Semua perangkat tersinkron" />
-        <div className="mx-4 h-px bg-gray-50" />
-        <SettingRow icon={<Download size={18} />} label="Ekspor Data" value="Export ke CSV / PDF" />
-      </div>
-
-      <SectionHeader title="Bahaya" />
-      <div className="mx-5 bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 mb-4">
-        <SettingRow icon={<Trash2 size={18} />} label="Hapus Semua Data" danger />
       </div>
     </div>
   );
@@ -565,7 +550,7 @@ function BottomNav({ activeTab, onTabChange, onAddExpense }: { activeTab: Tab; o
     { id: "dashboard" as Tab, icon: Home, label: "Beranda" },
     { id: "history" as Tab, icon: List, label: "Riwayat" },
     { id: "reports" as Tab, icon: PieChart, label: "Laporan" },
-    { id: "settings" as Tab, icon: Settings, label: "Pengaturan" },
+    { id: "settings" as Tab, icon: User, label: "Me" },
   ];
 
   return (
