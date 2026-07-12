@@ -1,2 +1,3 @@
 - [Orval email format zod v4 break](orval-openapi-quirks.md) — don't use `format: email` in OpenAPI specs; Orval emits `zod.email()` incompatible with pinned zod v3.
 - [connect-pg-simple table.sql lost on bundling](connect-pg-simple-bundling.md) — esbuild-bundled Node servers must create the session table manually, not via `createTableIfMissing`.
+- [Autoscale strips Set-Cookie](autoscale-cookie-stripping.md) — cookie sessions break in prod on Autoscale; use bearer tokens (Authorization header) for auth instead.

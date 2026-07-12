@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from 'react';
-import { useLogin, useRegister } from '@workspace/api-client-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useLogin, useRegister, getGetCurrentUserQueryKey } from '@workspace/api-client-react';
 import { useToast } from '@/hooks/use-toast';
+import { setToken } from '@/lib/auth-token';
 
 function GoogleIcon() {
   return (
@@ -34,6 +36,7 @@ export function LoginPage() {
 
   const loginMutation = useLogin();
   const registerMutation = useRegister();
+  const qc = useQueryClient();
 
   const pending = loginMutation.isPending || registerMutation.isPending;
 
@@ -44,6 +47,10 @@ export function LoginPage() {
       loginMutation.mutate(
         { data: { email, password } },
         {
+          onSuccess: (data) => {
+            setToken(data.token);
+            qc.setQueryData(getGetCurrentUserQueryKey(), data);
+          },
           onError: (err) => {
             toast({
               title: 'Gagal masuk',
@@ -59,6 +66,10 @@ export function LoginPage() {
       registerMutation.mutate(
         { data: { name, email, password } },
         {
+          onSuccess: (data) => {
+            setToken(data.token);
+            qc.setQueryData(getGetCurrentUserQueryKey(), data);
+          },
           onError: (err) => {
             toast({
               title: 'Gagal mendaftar',

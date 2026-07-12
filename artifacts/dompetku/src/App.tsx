@@ -21,6 +21,7 @@ import { Reports } from '@/components/Reports';
 import { SettingsView } from '@/components/SettingsView';
 import { AddExpenseModal } from '@/components/AddExpenseModal';
 import { BottomNav, type Tab } from '@/components/BottomNav';
+import { clearToken } from '@/lib/auth-token';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -126,6 +127,7 @@ function DompetKuApp() {
   const handleLogout = () => {
     logoutMutation.mutate(undefined, {
       onSuccess: () => {
+        clearToken();
         qc.setQueryData(getGetCurrentUserQueryKey(), null);
         qc.clear();
       },
