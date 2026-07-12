@@ -38,8 +38,8 @@ function PhoneShell({ children }: { children: React.ReactNode }) {
         className="relative overflow-hidden bg-gray-50"
         style={{
           width: '100%',
-          maxWidth: '390px',
-          height: '844px',
+          maxWidth: '402px',
+          height: '874px',
           borderRadius: '44px',
           boxShadow: '0 40px 80px rgba(0,0,0,0.3)',
         }}

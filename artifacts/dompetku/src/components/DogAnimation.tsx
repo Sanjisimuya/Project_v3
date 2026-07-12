@@ -14,7 +14,7 @@ export function DogAnimation() {
     <div
       className="w-full flex items-center justify-center relative overflow-hidden"
       style={{
-        height: '220px',
+        height: '150px',
         background:
           'linear-gradient(180deg, #fce7f3 0%, #fdf2f8 60%, #f0fdf4 100%)',
       }}
@@ -34,42 +34,42 @@ export function DogAnimation() {
         .star3 { animation: starPop 1.2s ease-in-out infinite 0.8s; }
       `}</style>
 
-      <div className="absolute star" style={{ top: 18, left: 36 }}>
-        <svg width="16" height="16" viewBox="0 0 24 24">
+      <div className="absolute star" style={{ top: 10, left: 30 }}>
+        <svg width="14" height="14" viewBox="0 0 24 24">
           <path
             fill="#f9a8d4"
             d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"
           />
         </svg>
       </div>
-      <div className="absolute star2" style={{ top: 28, right: 48 }}>
-        <svg width="11" height="11" viewBox="0 0 24 24">
+      <div className="absolute star2" style={{ top: 16, right: 40 }}>
+        <svg width="10" height="10" viewBox="0 0 24 24">
           <path
             fill="#86efac"
             d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"
           />
         </svg>
       </div>
-      <div className="absolute star3" style={{ top: 60, left: 72 }}>
-        <svg width="9" height="9" viewBox="0 0 24 24">
+      <div className="absolute star3" style={{ top: 38, left: 56 }}>
+        <svg width="8" height="8" viewBox="0 0 24 24">
           <path
             fill="#fcd34d"
             d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"
           />
         </svg>
       </div>
-      <div className="absolute star2" style={{ top: 22, right: 82 }}>
-        <span style={{ fontSize: '1rem', display: 'block' }}>💸</span>
+      <div className="absolute star2" style={{ top: 12, right: 66 }}>
+        <span style={{ fontSize: '0.9rem', display: 'block' }}>💸</span>
       </div>
-      <div className="absolute star3" style={{ top: 52, left: 46 }}>
-        <span style={{ fontSize: '0.8rem', display: 'block' }}>✨</span>
+      <div className="absolute star3" style={{ top: 34, left: 36 }}>
+        <span style={{ fontSize: '0.7rem', display: 'block' }}>✨</span>
       </div>
 
       <div
         style={{
-          width: 164,
-          height: 164,
-          borderRadius: 24,
+          width: 120,
+          height: 120,
+          borderRadius: 20,
           overflow: 'hidden',
           background: '#fff',
           boxShadow: '0 4px 16px rgba(249,168,212,0.35)',
@@ -93,10 +93,10 @@ export function DogAnimation() {
         </video>
       </div>
 
-      <div className="float-text absolute" style={{ top: 14, right: 28 }}>
+      <div className="float-text absolute" style={{ top: 6, right: 20 }}>
         <div
           className="bg-white rounded-2xl px-3 py-1.5 shadow-md relative"
-          style={{ fontSize: '0.75rem', color: '#be185d', fontWeight: 600 }}
+          style={{ fontSize: '0.72rem', color: '#be185d', fontWeight: 600 }}
         >
           <span>( •ω•) 💕</span>
           <div

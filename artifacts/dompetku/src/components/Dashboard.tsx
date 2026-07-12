@@ -52,7 +52,7 @@ export function Dashboard({ transactions }: DashboardProps) {
   return (
     <div className="flex flex-col h-full bg-gray-50 overflow-y-auto pb-24">
       <DogAnimation />
-      <div className="px-5 -mt-1 grid grid-cols-2 gap-3 mb-4">
+      <div className="px-5 -mt-1 grid grid-cols-2 gap-3 mb-3">
         <div className="bg-white rounded-2xl p-3.5 shadow-sm border border-gray-100">
           <p className="text-gray-500 mb-1" style={{ fontSize: '0.7rem' }}>
             Pengeluaran Hari Ini
@@ -77,10 +77,10 @@ export function Dashboard({ transactions }: DashboardProps) {
         </div>
       </div>
 
-      <div className="mx-5 mb-4">
+      <div className="mx-5 mb-3">
         <button
           onClick={() => setShowToday((v) => !v)}
-          className="flex items-center justify-between w-full mb-3"
+          className="flex items-center justify-between w-full mb-2"
         >
           <h3 className="text-gray-900">Hari Ini</h3>
           <div className="flex items-center gap-2">
@@ -114,8 +114,8 @@ export function Dashboard({ transactions }: DashboardProps) {
       </div>
 
       {yesterdayTx.length > 0 && (
-        <div className="mx-5 mb-4">
-          <div className="flex items-center justify-between mb-3">
+        <div className="mx-5 mb-3">
+          <div className="flex items-center justify-between mb-2">
             <h3 className="text-gray-900">Kemarin</h3>
             <span className="text-gray-400" style={{ fontSize: '0.75rem' }}>
               {formatRupiah(yesterdayTx.reduce((s, t) => s + t.amount, 0))}
