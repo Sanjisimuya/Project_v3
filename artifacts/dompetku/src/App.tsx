@@ -33,17 +33,12 @@ const queryClient = new QueryClient({
 
 function PhoneShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-200">
-      <div
-        className="relative overflow-hidden bg-gray-50"
-        style={{
-          width: '100%',
-          maxWidth: '402px',
-          height: '874px',
-          borderRadius: '44px',
-          boxShadow: '0 40px 80px rgba(0,0,0,0.3)',
-        }}
-      >
+    // On an actual phone, fill the whole viewport (dvh accounts for mobile
+    // browser chrome) with no frame — no wasted gray space. The rounded
+    // "phone in a browser" frame only appears from `sm:` up, i.e. when
+    // viewed on a desktop screen where a bezel makes sense as a preview.
+    <div className="w-full sm:flex sm:items-center sm:justify-center sm:min-h-screen sm:bg-gray-200">
+      <div className="relative overflow-hidden bg-gray-50 w-full h-[100dvh] sm:max-w-[402px] sm:h-[874px] sm:rounded-[44px] sm:shadow-[0_40px_80px_rgba(0,0,0,0.3)]">
         {children}
       </div>
     </div>
